@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace ClarkCodingChallenge.Repositories
 {
+    /// <summary>
+    /// Data Access Layer
+    /// </summary>
     public class ContactRepository : IRepository<Contact>
     {
         private readonly IDatabase<Contact> _dataAccess;

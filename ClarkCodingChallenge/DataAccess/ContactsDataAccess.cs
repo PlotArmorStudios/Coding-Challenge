@@ -1,13 +1,23 @@
 ﻿using ClarkCodingChallenge.Models;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ClarkCodingChallenge.DataAccess
 {
     public class ContactsDataAccess : IDatabase<Contact>
     {
+        public IConfiguration Configuration { get; }
         public string ConnectionString { get; }
+
+        public ContactsDataAccess(IConfiguration configuration)
+        {
+            Configuration = configuration;
+            ConnectionString = Configuration.GetConnectionString("ContactContext");
+        }
 
         public async Task AddAsync(Contact contact)
         {
@@ -30,9 +40,54 @@ namespace ClarkCodingChallenge.DataAccess
             }
         }
 
-        public Task<IEnumerable<Contact>> GetSelectedAsync(string lastName, string sortOrder)
+        public async Task<IEnumerable<Contact>> GetSelectedAsync(string lastName, string sortOrder)
         {
-            throw new System.NotImplementedException();
+            IEnumerable<Contact> contacts = await RunQuery(
+                "SELECT Contact_ID, FirstName, LastName, Email " +
+            "FROM Contact");
+
+            if (!string.IsNullOrEmpty(lastName))
+            {
+                contacts = contacts.Where(m => m.LastName == lastName);
+            }
+
+            if (sortOrder.ToLower() == "asc")
+                contacts = contacts.OrderBy(m => m.LastName).ThenBy(m => m.FirstName);
+            if (sortOrder.ToLower() == "desc")
+                contacts = contacts.OrderBy(m => m.LastName).ThenByDescending(m => m.FirstName);
+
+            return contacts;
+        }
+
+        private async Task<IEnumerable<Contact>> RunQuery(string query)
+        {
+            List<Contact> contacts = new List<Contact>();
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = query;
+                    await command.Connection.OpenAsync();
+
+                    using (SqlDataReader sqlDataReader = await command.ExecuteReaderAsync())
+                    {
+                        while (await sqlDataReader.ReadAsync())
+                        {
+                            contacts.Add(new Contact
+                            {
+                                Id = Convert.ToInt32(sqlDataReader["Contact_ID"]),
+                                FirstName = sqlDataReader["FirstName"].ToString(),
+                                LastName = sqlDataReader["LastName"].ToString(),
+                                Email = sqlDataReader["Email"].ToString()
+                            });
+                        }
+                    }
+                    await command.Connection.CloseAsync();
+                }
+            }
+
+            return contacts;
         }
     }
 }

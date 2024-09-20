@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ClarkCodingChallenge.Models;
 using ClarkCodingChallenge.BusinessLogic;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClarkCodingChallenge.Controllers
 {
@@ -25,7 +26,11 @@ namespace ClarkCodingChallenge.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Contact obj)
         {
-            await _contactService.AddContactAsync(obj);
+            if (!ModelState.IsValid)
+            {
+                await _contactService.AddContactAsync(obj);
+                return RedirectToAction(nameof(ShowCreateForm));
+            }
             return RedirectToAction(nameof(ShowConfirmationPage));
         }
 
