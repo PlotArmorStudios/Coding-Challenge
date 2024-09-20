@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace ClarkCodingChallenge.DataAccess
 {
+    /// <summary>
+    /// Set up of all CRUD operations applicable to this database.
+    /// Prioritized set up of C and R operations to match the requirements of this project
+    /// For a full application, U and D operations would also be implemented
+    /// This applies to the IRepository implementation as well
+    /// </summary>
     public class ContactsDataAccess : IDatabase<Contact>
     {
         public IConfiguration Configuration { get; }

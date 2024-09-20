@@ -19,6 +19,8 @@ namespace ClarkCodingChallenge.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string lastName = null, string sortOrder = "asc")
         {
+            //Using asynchronous programming to not hold up the calling thread while
+            //querying desired contacts
             var contacts = await _contactService.GetSelectedContactAsync(lastName, sortOrder);
             return View(contacts);
         }
