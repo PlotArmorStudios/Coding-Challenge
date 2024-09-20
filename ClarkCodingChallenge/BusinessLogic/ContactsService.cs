@@ -5,7 +5,7 @@ using ClarkCodingChallenge.Repositories;
 
 namespace ClarkCodingChallenge.BusinessLogic
 {
-    public class ContactsService
+    public class ContactsService : IContactsService
     {
         public IRepository<Contact> Repository;
 

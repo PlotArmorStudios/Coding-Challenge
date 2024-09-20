@@ -1,0 +1,21 @@
+﻿@model Contact
+
+<h1>Create Contact</h1>
+
+<form method="post" action="Create">
+    <div class="mb-3">
+        <label asp-for="FirstName"></label>
+        <input type="text" asp-for="FirstName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LastName"></label>
+        <textarea type="text" asp-for="LastName" class="form-control" /></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Email"></label>
+        <input type="text" asp-for="Email" class="form-control" />
+
+        <button type="submit" class="btn btn-primary">Create</button>
+</form>
