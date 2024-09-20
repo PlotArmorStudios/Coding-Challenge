@@ -1,4 +1,5 @@
-﻿using ClarkCodingChallenge.Models;
+﻿using ClarkCodingChallenge.BusinessLogic;
+using ClarkCodingChallenge.Models;
 using ClarkCodingChallenge.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,6 +31,8 @@ namespace ClarkCodingChallenge
             });
 
             services.AddScoped<IRepository<Contact>, ContactRepository>(); //new instance for every request
+            services.AddScoped<IContactsService, ContactsService>(); //new instance for every request
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 

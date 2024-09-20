@@ -2,6 +2,29 @@
     ViewData["Title"] = "Contacts Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+@model IEnumerable<Contact>
+
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model)
+            {
+                <tr>
+                    <td>@entry.FirstName</td>
+                    <td>@entry.LastName</td>
+                    <td>@entry.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
 </div>
