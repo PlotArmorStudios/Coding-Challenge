@@ -6,16 +6,23 @@
     <div class="mb-3">
         <label asp-for="FirstName"></label>
         <input type="text" asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="LastName"></label>
         <textarea type="text" asp-for="LastName" class="form-control" /></textarea>
+        <span asp-validation-for="LastName" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="Email"></label>
         <input type="text" asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
 
         <button type="submit" class="btn btn-primary">Create</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,4 +1,5 @@
 ﻿using ClarkCodingChallenge.BusinessLogic;
+using ClarkCodingChallenge.DataAccess;
 using ClarkCodingChallenge.Models;
 using ClarkCodingChallenge.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +29,11 @@ namespace ClarkCodingChallenge
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddScoped<IDatabase<Contact>, ContactsDataAccess>(provider =>
+            {
+                return new ContactsDataAccess(Configuration);
             });
 
             services.AddScoped<IRepository<Contact>, ContactRepository>(); //new instance for every request
